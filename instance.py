@@ -30,10 +30,3 @@ class Instance:
                     if self.spectrum[first_word][i:] == self.spectrum[second_word][:-i]:
                         self.matrix[first_word][second_word] = self.l - i
                         break
-
-    def get_adj(self, i, j):
-        if i < 0 or j < 0:
-            return None
-        if i >= len(self.matrix) or j >= len(self.matrix[i]):
-            return None
-        return self.matrix[i][j]
