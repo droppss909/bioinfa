@@ -9,15 +9,19 @@ class Instance:
     n = 0
     k = 0
 
-    def __init__(self, file_path, n):
+
+    def __init__(self, file_path):
         file = open(file_path, "r")
         for line in file:
-            self.spectrum.append(line[:-1])
+            if any(char.isdigit() for char in line):
+                seq_len=int(line)
+            else:
+                self.spectrum.append(line[:-1])
         random.shuffle(self.spectrum)
         K = len(self.spectrum)
         self.matrix = np.zeros((K, K), dtype=int)
         self.l = len(self.spectrum[0])
-        self.n = n
+        self.n = seq_len
         self.k = len(self.spectrum)
         self.populate_adjacency_matrix()
 
