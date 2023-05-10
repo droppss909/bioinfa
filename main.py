@@ -1,9 +1,10 @@
 from instance import *
+import sys
 
 
 def improvedGreedy(instance: Instance, sequence=None, cost=0):
     if sequence is None:
-        sequence = [random.randint(0, instance.k)]
+        sequence = [chooseStartingWord(instance.matrix)]
         cost = instance.l
 
     while cost < instance.n:
@@ -48,6 +49,18 @@ def chooseSuccessor(instance, v, candidates):
     return bestCandidate, instance.l - instance.matrix[v][bestCandidate]
 
 
+def chooseStartingWord(matrix):
+    candidates = []
+    highestSum = -1
+    for i in range(len(matrix)):
+        weightSum = sum(matrix[i]) + sum(matrix[:][i])
+        if weightSum > highestSum:
+            candidates = [i]
+        elif weightSum == highestSum:
+            candidates.append(i)
+    return random.choice(candidates)
+
+
 def reconstructSequence(path, spectrum, matrix):
     sequence = spectrum[path[0]]
     l = len(sequence)
@@ -58,7 +71,12 @@ def reconstructSequence(path, spectrum, matrix):
 
 
 if __name__ == '__main__':
-    instance = Instance("53.500-200.txt", 509)
+    if len(sys.argv) < 3:
+        print("Za mało argumentów")
+        exit()
+    input_file = sys.argv[1]
+    n = int(sys.argv[2])
+    instance = Instance(input_file, n)
     wordSequence = improvedGreedy(instance)
     result = reconstructSequence(
         wordSequence, instance.spectrum, instance.matrix)
